@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Flipbook</title>
+<meta name="viewport" content="width = 1024, user-scalable = no" />
+
+
+<script type="text/javascript" src="cordova.js"></script>
+        <script>
+	        var deviceType;
+	        document.addEventListener("deviceready", onDeviceReady, false);
+	        function onDeviceReady() {
+			deviceType = device.model;
+			 alert(deviceType);
+        }
+ 
+
+        </script>
+<script type="text/javascript">
+		document.ontouchmove = function(event){
+		    event.preventDefault();
+		}
+		</script>
+<script type="text/javascript" src="extras/jquery.min.1.7.js"></script>
+<script type="text/javascript" src="extras/jquery-ui-1.8.20.custom.min.js"></script>
+<script type="text/javascript" src="extras/modernizr.2.5.3.min.js"></script>
+<script type="text/javascript" src="lib/hash.js"></script>
+<script type="text/javascript" src="lib/params.js"></script>
+<script type="text/javascript">
+		
+		var folder = getParameterByName('id');
+		var numpages = getParameterByName('pages');
+		var toc = getParameterByName('toc');
+		var size = getParameterByName('size');
+		var bookwidth = "";
+		var bookheight = "";
+		
+		var deviceType = (navigator.userAgent.match(/iPad/i))  == "iPad" ? "iPad" : (navigator.userAgent.match(/iPhone/i))  == "iPhone" ? "iPhone" : (navigator.userAgent.match(/Android/i)) == "Android" ? "Android" : (navigator.userAgent.match(/BlackBerry/i)) == "BlackBerry" ? "BlackBerry" : "null";
+		
+		if (deviceType == "iPhone"){
+			size = size + "-phone";
+		}
+		
+		
+		</script>
+</head>
+<body>
+
+<div id="canvas">
+		
+			<div class="zoom-icon zoom-icon-in"></div>
+			
+			<div id="viewport">
+				<div class="container">
+					<div id="thebook">
+						<!-- Next button -->
+						<div ignore="1" class="next-button"></div>
+						<!-- Previous button -->
+						<div ignore="1" class="previous-button"></div>
+					</div>
+				</div>
+		</div>
+
+<script type="text/javascript">
+
+$("#thebook").addClass(size);
+$("#viewport").addClass(size + "-viewport");
+
+var flipbook = $('#thebook');
+
+switch (size){
+	case "magazine":
+		bookwidth = 922;
+		bookheight = 600;
+		displaytype = "double";
+		break;
+	case "magazine-phone":
+		bookwidth = 461;
+		bookheight = 600;
+		displaytype = "single";
+		break;
+	case "ppt":
+		bookwidth = 820;
+		bookheight = 615;
+		displaytype = "single";
+		break;
+	case "ppt-phone":
+		bookwidth = 820;
+		bookheight = 615;
+		displaytype = "single";
+		break;
+}
+
+function loadApp() {
+
+ 	$('#canvas').fadeIn(1000);
+ 	
+ 	// Check if the CSS was already loaded
+
+	if (flipbook.width()==0 || flipbook.height()==0) {
+		setTimeout(loadApp, 10);
+		return;
+	}
+	
+	// Create the flipbook
+
+	flipbook.turn({
+			
+			// Magazine width
+
+			width: bookwidth,
+
+			// Magazine height
+
+			height: bookheight,
+			
+			display: displaytype,
+
+			// Duration in millisecond
+
+			duration: 1000,
+
+			// Enables gradients
+
+			gradients: true,
+			
+			// Auto center this flipbook
+
+			autoCenter: true,
+
+			// Elevation from the edge of the flipbook when turning a page
+
+			elevation: 50,
+
+			// The number of pages
+
+			pages: numpages,
+
+			// Events
+
+			when: {
+				turning: function(event, page, view) {
+					
+					var book = $(this),
+					currentPage = book.turn('page'),
+					pages = book.turn('pages');
+			
+					// Update the current URI
+
+					Hash.go('page/' + page).update();
+
+					// Show and hide navigation buttons
+
+					disableControls(page);
+
+				},
+
+				turned: function(event, page, view) {
+
+					disableControls(page);
+
+					$(this).turn('center');
+
+					$('#slider').slider('value', getViewNumber($(this), page));
+
+					if (page==1) { 
+						$(this).turn('peel', 'br');
+					}
+
+				},
+
+				missing: function (event, pages) {
+
+					// Add pages that aren't in the magazine
+
+					for (var i = 0; i < pages.length; i++)
+						addPage(pages[i], $(this), folder);
+
+				}
+			}
+
+	});
+
+	// Zoom.js
+
+	$('#viewport').zoom({
+		flipbook: $('#thebook'),
+
+		max: function() { 
+	
+			return largeMagazineWidth()/$('#thebook').width();
+
+		}, 
+
+		when: {
+			swipeLeft: function() {
+
+				$(this).zoom('flipbook').turn('next');
+
+			},
+
+			swipeRight: function() {
+				
+				$(this).zoom('flipbook').turn('previous');
+
+			},
+
+			resize: function(event, scale, page, pageElement) {
+
+				if (scale==1)
+					loadSmallPage(page, pageElement, folder);
+				else
+					loadLargePage(page, pageElement, folder);
+
+			},
+
+			zoomIn: function () {
+
+				$('.toc').hide();
+				$('#slider-bar').hide();
+				$('.made').hide();
+				$('#thebook').removeClass('animated').addClass('zoom-in');
+				$('.zoom-icon').removeClass('zoom-icon-in').addClass('zoom-icon-out');
+				
+				if (!window.escTip && !$.isTouch) {
+					escTip = true;
+
+					$('<div />', {'class': 'exit-message'}).
+						html('<div>Press ESC to exit</div>').
+							appendTo($('body')).
+							delay(2000).
+							animate({opacity:0}, 500, function() {
+								$(this).remove();
+							});
+				}
+			},
+
+			zoomOut: function () {
+
+				$('.toc').show();
+				$('#slider-bar').fadeIn();
+				$('.exit-message').hide();
+				$('.made').fadeIn();
+				$('.zoom-icon').removeClass('zoom-icon-out').addClass('zoom-icon-in');
+
+				setTimeout(function(){
+					$('#thebook').addClass('animated').removeClass('zoom-in');
+					resizeViewport();
+				}, 0);
+
+			}
+		}
+	});
+
+	// Zoom event
+
+	if ($.isTouch)
+		$('#viewport').bind('zoom.doubleTap', zoomTo);
+	else
+		$('#viewport').bind('zoom.tap', zoomTo);
+
+
+	// Using arrow keys to turn the page
+
+	$(document).keydown(function(e){
+
+		var previous = 37, next = 39, esc = 27;
+
+		switch (e.keyCode) {
+			case previous:
+
+				// left arrow
+				$('#thebook').turn('previous');
+				e.preventDefault();
+
+			break;
+			case next:
+
+				//right arrow
+				$('#thebook').turn('next');
+				e.preventDefault();
+
+			break;
+			case esc:
+				
+				$('#viewport').zoom('zoomOut');	
+				e.preventDefault();
+
+			break;
+		}
+	});
+
+	// URIs - Format #/page/1 
+
+	Hash.on('^page\/([0-9]*)$', {
+		yep: function(path, parts) {
+			var page = parts[1];
+
+			if (page!==undefined) {
+				if ($('#thebook').turn('is'))
+					$('#thebook').turn('page', page);
+			}
+
+		},
+		nop: function(path) {
+
+			if ($('#thebook').turn('is'))
+				$('#thebook').turn('page', 1);
+		}
+	});
+
+
+	$(window).resize(function() {
+		resizeViewport();
+	}).bind('orientationchange', function() {
+		resizeViewport();
+	});
+
+	// Regions
+
+	if ($.isTouch) {
+		$('#thebook').bind('touchstart', regionClick);
+	} else {
+		$('#thebook').click(regionClick);
+	}
+
+	// Events for the next button
+
+	$('.next-button').bind($.mouseEvents.over, function() {
+		
+		$(this).addClass('next-button-hover');
+
+	}).bind($.mouseEvents.out, function() {
+		
+		$(this).removeClass('next-button-hover');
+
+	}).bind($.mouseEvents.down, function() {
+		
+		$(this).addClass('next-button-down');
+
+	}).bind($.mouseEvents.up, function() {
+		
+		$(this).removeClass('next-button-down');
+
+	}).click(function() {
+		
+		$('#thebook').turn('next');
+
+	});
+
+	// Events for the next button
+	
+	$('.previous-button').bind($.mouseEvents.over, function() {
+		
+		$(this).addClass('previous-button-hover');
+
+	}).bind($.mouseEvents.out, function() {
+		
+		$(this).removeClass('previous-button-hover');
+
+	}).bind($.mouseEvents.down, function() {
+		
+		$(this).addClass('previous-button-down');
+
+	}).bind($.mouseEvents.up, function() {
+		
+		$(this).removeClass('previous-button-down');
+
+	}).click(function() {
+		
+		$('#thebook').turn('previous');
+
+	});
+
+
+	// Slider
+
+	$( "#slider" ).slider({
+		min: 1,
+		max: numberOfViews(flipbook),
+
+		start: function(event, ui) {
+
+			if (!window._thumbPreview) {
+				_thumbPreview = $('<div />', {'class': 'thumbnail'}).html('<div></div>');
+				setPreview(ui.value,folder);
+				_thumbPreview.appendTo($(ui.handle));
+			} else
+				setPreview(ui.value,folder);
+
+			moveBar(false);
+
+		},
+
+		slide: function(event, ui) {
+
+			setPreview(ui.value,folder);
+
+		},
+
+		stop: function() {
+
+			if (window._thumbPreview)
+				_thumbPreview.removeClass('show');
+			
+			$('#thebook').turn('page', Math.max(1, $(this).slider('value')*2 - 2));
+
+		}
+	});
+
+	resizeViewport();
+
+	$('#thebook').addClass('animated');
+
+}
+
+// Zoom icon
+
+ $('.zoom-icon').bind('mouseover', function() { 
+ 	
+ 	if ($(this).hasClass('zoom-icon-in'))
+ 		$(this).addClass('zoom-icon-in-hover');
+
+ 	if ($(this).hasClass('zoom-icon-out'))
+ 		$(this).addClass('zoom-icon-out-hover');
+ 
+ }).bind('mouseout', function() { 
+ 	
+ 	 if ($(this).hasClass('zoom-icon-in'))
+ 		$(this).removeClass('zoom-icon-in-hover');
+ 	
+ 	if ($(this).hasClass('zoom-icon-out'))
+ 		$(this).removeClass('zoom-icon-out-hover');
+
+ }).bind('click', function() {
+
+ 	if ($(this).hasClass('zoom-icon-in'))
+ 		$('#viewport').zoom('zoomIn');
+ 	else if ($(this).hasClass('zoom-icon-out'))	
+		$('#viewport').zoom('zoomOut');
+
+ });
+
+ $('#canvas').hide();
+
+yepnope({
+	test : Modernizr.csstransforms,
+	yep: ['lib/turn.min.js'],
+	nope: ['lib/turn.html4.min.js', 'css/jquery.ui.html4.css'],
+	both: ['lib/zoom.min.js', 'css/jquery.ui.css', 'js/magazine.js', 'css/' + size + '.css'],
+	complete: loadApp
+});
+
+</script>
+
+</body>
+</html>
