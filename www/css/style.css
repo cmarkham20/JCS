@@ -1,0 +1,267 @@
+html, body { height : 100%; font-size: 13px; text-transform: none; }
+
+.table { display: table; }
+.table-row { display: table-row; }
+.table-cell { display: table-cell; }
+
+.table-full { width: 100%; height: 100%; }
+.table-cell-center { text-align: center; vertical-align: middle; }
+ 
+.page-full-height { height: 100%; background: #fff; background-size: 100% 100%;  }
+#home { background: url(../img/bg_2x_logo.png) top center no-repeat #fff; background-size: 100% 100%; }
+#logo { display: none; }
+#prodstd-home { background: url(../img/bg_2x_prodstd.png) top center no-repeat #fff; background-size: 100% 100%; }
+.page-full-height .ui-header {
+    height : 30px;
+}
+
+.page-full-height .ui-content {
+    position : absolute;
+    top      : 30px;
+    right    : 0;
+    bottom   : 77px;
+    left     : 0;
+}
+.page-full-height .ui-footer {
+    position : absolute;
+    bottom   : 0;
+    left     : 0;
+    width    : 100%;
+    height   : 77px;
+}
+
+body .ui-page-theme-a .ui-bar-inherit { background: transparent; border: 0; }
+
+body .ui-page-theme-a .ui-btn { background: transparent; border: 0; }
+body .ui-page-theme-a .ui-footer { background: url(../img/bg_footer.png); }
+body .ui-page-theme-a .ui-footer ul { margin-top: 10px; }
+body .ui-page-theme-a .ui-footer a { color: #fff; text-shadow: none; background: transparent; text-transform: uppercase;  padding-top: 20px; padding-bottom: 20px; display: block; }
+
+.nav-popup { position: absolute; bottom: 77px; width: 23%; background: #b51215; z-index: 1000; display: none; }
+.nav-popup li { list-style: none; text-align: center; }
+.nav-popup li a { text-decoration: none; text-transform: none;}
+
+#nav-ultra-family { left: 5%; }
+.nav-diff { right: 5%; }
+
+#ultraflex-map, #ultrasys-map, #mst-map { width:940px; height:625px; margin:auto; }
+
+.ToolTipInfoDiv{
+	margin:0px !important;
+	padding:0px !important;
+	position:relative !important;
+	font-family:Arial !important;
+	font-size:16px !important;
+	padding:15px !important;
+	line-height:18px !important;
+	border-style:solid !important;
+	border-width:1px !important;
+	border-color:#fff !important;
+	box-shadow: 5px 5px 5px rgba(0,0,0,.25);
+	width:650px  !important;
+	background: #c1191d;
+	color: #fff;
+	line-height: 125% !important;
+}
+
+.infoDiv h2, .ToolTipInfoDiv h2 {
+	margin-bottom: 8px;
+	text-transform: uppercase;
+	font-size: 24px !important;
+	line-height: 125% !important;
+}
+
+
+.infoDiv ol, .ToolTipInfoDiv ol {
+	margin-left: 20px;
+}
+
+.infoDiv{
+	margin:0px !important;
+	padding:0px !important;
+	font-family:Arial !important;
+	font-size:12px !important;
+	padding:15px !important;
+	line-height:18px !important;
+	background: #c1191d !important;
+	box-shadow: 5px 5px 5px rgba(0,0,0,.25) !important;
+	color: #fff !important;
+	border-radius: 0 !important;
+	border-top-right-radius: 20px !important;
+}
+
+.diff-table th { font-size: 24px; }
+.diff-table th, .diff-table td { text-align: center; padding: 8px; }
+.diff-table tr td:first-child { text-align: left; font-weight: bold; }
+.diff-table tr:nth-child(even) td { background: #f6f6f6; }
+.diff-table td { font-size: 18px; }
+
+.ppt-thumbnail { width: 30%; display: inline-block; margin: 1%; border: 1px solid #ddd; }
+.ppt-thumbnail img { width: 100%; height: auto; }
+
+
+/* ----------- iPhones ----------- */
+@media (max-width:767px){
+
+	#home, #prodstd-home { background: url(../img/bg_2x.png) center center no-repeat #fff; background-size: auto 100%; }	
+	#logo { display: block; background: url(../img/jcs-logo.png) center center no-repeat transparent; background-size: 100% auto; width: 80%; height: 400px; margin: 0 auto; }
+	#prodstd-logo { display: block; background: url(../img/logo-cps.png) center center no-repeat transparent; background-size: 90% auto; width: 90%; height: 400px; margin: 0 auto; }
+	body .ui-page-theme-a .ui-footer a { padding-top: 10px; padding-bottom: 10px; }
+	
+	.ToolTipInfoDiv{ font-size:12px !important; }
+	.infoDiv h2, .ToolTipInfoDiv h2 { font-size: 16px !important; }
+	.diff-table th, .diff-table td { padding: 4px; }
+	.diff-table th { font-size: 16px; }
+	.diff-table td { font-size: 10px; }
+	
+	.infoDiv img { width: 100%; height: auto; }
+
+	
+}
+
+/* ----------- Portait ----------- */
+@media (max-width:767px) and (orientation: portrait){
+	body .ui-page-theme-a .ui-footer li { width: 100%; float: none; display: block; }
+	body .ui-page-theme-a .ui-footer { background-size: auto 100%; } 
+	#logo, #prodstd-logo { background-size: 90% auto; width: 90%; height: 400px; }
+	
+	.page-footer-nav-three .ui-content {bottom   : 130px; }
+	.page-footer-nav-three .ui-footer { height   : 130px; }
+	.page-footer-nav-three .nav-popup { bottom: 130px; width: 90%; }
+	
+	.page-footer-nav-two .ui-content {bottom   : 100px; }
+	.page-footer-nav-two .ui-footer { height   : 100px; }
+	.page-footer-nav-two .nav-popup { bottom: 100px; width: 90%; }
+	
+}
+
+
+/* ----------- Landscape ----------- */
+@media (max-width:767px) and (orientation: landscape){
+	#logo, #prodstd-logo { background-size: auto 100%; width: 90%; height: 150px; }
+	.page-full-height .ui-content {bottom   : 57px; }
+	.page-full-height .ui-footer { height   : 57px; }
+	.nav-popup { bottom: 57px; }
+}
+
+
+/* ----------- iPhone 4 and 4S ----------- */
+
+/* Portrait and Landscape */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+}
+
+/* Portrait */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+	  #ultraflex-map, #ultrasys-map, #mst-map { width:300px; height:290px; margin:auto; }
+	  .ToolTipInfoDiv{ width: 280px  !important; }
+}
+
+/* Landscape */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+  	#ultraflex-map, #ultrasys-map, #mst-map { width:363px; height:203px; margin:auto; }
+	.ToolTipInfoDiv{ width: 343px  !important; }
+}
+
+/* ----------- iPhone 5 and 5S ----------- */
+
+/* Portrait and Landscape */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+}
+
+/* Portrait */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+	#ultraflex-map, #ultrasys-map, #mst-map { width:300px; height:378px; margin:auto; }
+	.ToolTipInfoDiv{ width: 280px  !important; }
+}
+
+/* Landscape */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+  	#ultraflex-map, #ultrasys-map, #mst-map { width:548px; height:203px; margin:auto; }
+	.ToolTipInfoDiv{ width: 528px  !important; }
+}
+
+/* ----------- iPhone 6 ----------- */
+
+/* Portrait and Landscape */
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2) { 
+	 
+}
+
+/* Portrait */
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) { 
+	   #ultraflex-map, #ultrasys-map, #mst-map { width:355px; height:507px; margin:auto; }
+	.ToolTipInfoDiv{ width: 335px  !important; }
+}
+
+/* Landscape */
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) { 
+	  #ultraflex-map, #ultrasys-map, #mst-map { width:647px; height:288px; margin:auto; }
+	.ToolTipInfoDiv{ width: 627px  !important; }
+
+}
+
+/* ----------- iPhone 6+ ----------- */
+
+/* Portrait and Landscape */
+@media only screen 
+  and (min-device-width: 414px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 3) { 
+
+}
+
+/* Portrait */
+@media only screen 
+  and (min-device-width: 414px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: portrait) { 
+	  #ultraflex-map, #ultrasys-map, #mst-map { width:394px; height:576px; margin:auto; }
+	.ToolTipInfoDiv{ width: 374px  !important; }
+}
+
+/* Landscape */
+@media only screen 
+  and (min-device-width: 414px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: landscape) { 
+	  #ultraflex-map, #ultrasys-map, #mst-map { width:716px; height:327px; margin:auto; }
+	.ToolTipInfoDiv{ width: 696px  !important; }
+}
